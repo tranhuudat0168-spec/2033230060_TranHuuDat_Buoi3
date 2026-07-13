@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Xem thời tiết</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 30px;
+        }
+
+        input {
+            padding: 8px;
+            width: 220px;
+        }
+
+        button {
+            padding: 8px 15px;
+            cursor: pointer;
+        }
+
+        #weather {
+            margin-top: 20px;
+            padding: 15px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            width: 280px;
+            background: #f8f8f8;
+        }
+
+        h3 {
+            margin-top: 0;
+            color: #0066cc;
+        }
+    </style>
+</head>
+<body>
+
+<h2>Tra cứu thời tiết</h2>
+
+<input type="text" id="city" placeholder="Nhập tên thành phố">
+<button onclick="getWeather()">Xem</button>
+
+<div id="weather"></div>
+
+<script>
+function getWeather() {
+    let c = document.getElementById("city").value.trim();
+
+    if (c === "") {
+        alert("Vui lòng nhập tên thành phố.");
+        return;
+    }
+
+    fetch("weather.php?city=" + encodeURIComponent(c))
+        .then(res => res.json())
+        .then(data => {
+
+            document.getElementById("weather").innerHTML = `
+                <h3>${c}</h3>
+                <p><strong>Nhiệt độ:</strong> ${data.temp} °C</p>
+                <p><strong>Thời tiết:</strong> ${data.desc}</p>
+            `;
+
+        })
+        .catch(error => {
+            document.getElementById("weather").innerHTML =
+                "<p>Không thể lấy dữ liệu thời tiết.</p>";
+            console.error(error);
+        });
+}
+</script>
+
+</body>
+</html>
