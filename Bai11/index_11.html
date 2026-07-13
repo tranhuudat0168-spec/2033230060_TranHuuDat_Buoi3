@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Tỷ giá ngoại tệ</title>
+
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 500px;
+        }
+
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: center;
+        }
+
+        th {
+            background: #ddd;
+        }
+    </style>
+
+</head>
+
+<body>
+
+<h2>Tỷ giá ngoại tệ</h2>
+
+<table id="currency">
+
+</table>
+<script>
+
+function loadCurrency(){
+
+    fetch("currency.php")
+
+    .then(res => res.json())
+
+    .then(data => {
+
+        let html = `
+            <tr>
+                <th>Mã</th>
+                <th>Tên ngoại tệ</th>
+                <th>Tỷ giá (VNĐ)</th>
+            </tr>
+        `;
+
+        data.forEach(item => {
+
+            html += `
+            <tr>
+                <td>${item.code}</td>
+                <td>${item.name}</td>
+                <td>${item.rate}</td>
+            </tr>
+            `;
+
+        });
+        document.getElementById("currency")
+        .innerHTML = html;
+
+    });
+
+}
+
+// Tải dữ liệu lần đầu
+loadCurrency();
+
+// Cập nhật sau mỗi 10 phút
+setInterval(
+    loadCurrency,
+    5000
+    //600000
+);
+
+</script>
+
+</body>
+
+</html>
