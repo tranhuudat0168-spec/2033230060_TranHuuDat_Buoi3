@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+
+    <!-- Thẻ h1 dùng để hiển thị thời gian -->
+    <h1 id="time"></h1>
+
+    <script>
+
+        function getTime() {
+            fetch('time.php')
+
+                // Nhận phản hồi và chuyển thành chuỗi 
+                .then(res => res.text())
+
+                // Hiển thị id="time"
+                .then(data =>
+                    document.getElementById("time").innerText = data
+                );
+        }
+
+        // Gọi hàm getTime() sau mỗi 5000 ms 
+        setInterval(getTime, 5000);
+
+        getTime();
+
+    </script>
+
+</body>
+
+</html>
