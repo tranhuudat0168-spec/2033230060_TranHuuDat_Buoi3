@@ -1,0 +1,22 @@
+[
+    {
+        "code": "USD",
+        "name": "Đô la Mỹ",
+        "rate": 25400
+    },
+    {
+        "code": "EUR",
+        "name": "Euro",
+        "rate": 28000
+    },
+    {
+        "code": "JPY",
+        "name": "Yên Nhật",
+        "rate": 260
+    },
+    {
+        "code": "KRW",
+        "name": "Won Hàn Quốc",
+        "rate": -6
+    }
+]
