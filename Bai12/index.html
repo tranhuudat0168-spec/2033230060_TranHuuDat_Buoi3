@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Đăng ký tài khoản</title>
+
+    <style>
+        input {
+            display: block;
+            margin: 10px;
+            padding: 8px;
+            width: 250px;
+        }
+
+        button {
+            padding: 8px 20px;
+        }
+
+        #msg {
+            color: green;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <h2>Đăng ký tài khoản</h2>
+
+
+    <input type="text" id="username" placeholder="Tên đăng nhập">
+
+    <input type="email" id="email" placeholder="Email">
+
+    <input type="password" id="password" placeholder="Mật khẩu">
+
+
+    <button onclick="register()">
+        Đăng ký
+    </button>
+
+
+    <p id="msg"></p>
+
+
+
+    <script>
+
+        function register() {
+
+
+            let username =
+                document.getElementById("username").value;
+
+
+            let email =
+                document.getElementById("email").value;
+
+
+            let password =
+                document.getElementById("password").value;
+
+
+
+            // Kiểm tra form
+
+            if (username == "" || email == "" || password == "") {
+                document.getElementById("msg").innerText =
+                    "Vui lòng nhập đầy đủ thông tin";
+
+                return;
+            }
+
+
+            if (password.length < 6) {
+                document.getElementById("msg").innerText =
+                    "Mật khẩu phải từ 6 ký tự";
+
+                return;
+            }
+
+
+
+            // Gửi dữ liệu sang PHP
+
+            fetch("register.php", {
+
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+
+                body: JSON.stringify({
+
+                    username: username,
+
+                    email: email,
+
+                    password: password
+
+                })
+
+            })
+
+
+                .then(res => res.text())
+
+
+                .then(data => {
+
+                    document.getElementById("msg")
+                        .innerText = data;
+
+                });
+
+
+        }
+
+    </script>
+
+
+</body>
+
+</html>
