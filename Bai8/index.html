@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Chat đơn giản</title>
+</head>
+<body>
+
+<h2>Phòng Chat</h2>
+
+<textarea id="chat" rows="10" cols="40" readonly></textarea>
+<br><br>
+
+<input type="text" id="msg" placeholder="Nhập tin nhắn...">
+<button onclick="send()">Gửi</button>
+
+<script>
+// Tải tin nhắn
+function loadChat() {
+    fetch('chat.php')
+        .then(res => res.json())
+        .then(data => {
+            document.getElementById("chat").value = data.join("\n");
+            // Tự động cuộn xuống cuối
+            document.getElementById("chat").scrollTop =
+                document.getElementById("chat").scrollHeight;
+        });
+}
+
+// Gửi tin nhắn
+function send() {
+    let msg = document.getElementById("msg").value.trim();
+
+    if (msg === "") return;
+
+    let formData = new FormData();
+    formData.append("msg", msg);
+
+    fetch("chat.php", {
+        method: "POST",
+        body: formData
+    })
+    .then(() => {
+        document.getElementById("msg").value = "";
+        loadChat();
+    });
+}
+
+// Nhấn Enter để gửi
+document.getElementById("msg").addEventListener("keypress", function(e) {
+    if (e.key === "Enter") {
+        send();
+    }
+});
+
+// Cập nhật tin nhắn mỗi 2 giây
+setInterval(loadChat, 2000);
+
+// Tải tin nhắn khi mở trang
+loadChat();
+</script>
+
+</body>
+</html>
