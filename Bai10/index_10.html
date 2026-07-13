@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+    <h2>To-do List</h2>
+    <input id="task" placeholder="Nhập công việc">
+    <button onclick="addTask()">Thêm</button>
+    <ul id="list"></ul>
+    <script>
+        function loadTodo() {
+            fetch("todo.php")
+                .then(res => res.json())
+                .then(data => {let html = "";
+                    data.forEach((todo, index) => {
+                        html += `
+            <li style=" padding:10px; margin:5px;">
+                <input type="checkbox"
+                ${todo.done ? "checked" : ""}
+                onclick="complete(${index})">
+                ${todo.task}
+                <button onclick="remove(${index})"
+                style=" padding:5px 10px;margin-left:10px;">
+                xóa
+                </button>
+                  </li>`;
+                    });
+                    document.getElementById("list").innerHTML = html;
+                });
+        }
+        function addTask() {
+            let task = document.getElementById("task").value;
+            fetch("todo.php", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    action: "add",
+                    task: task
+                })
+            })
+                .then(() => loadTodo());
+        }
+
+        function remove(id) {
+
+            fetch("todo.php", {
+
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify({
+                    action: "delete",
+                    id: id
+                })
+
+            })
+                .then(() => loadTodo());
+
+        }
+        function complete(id) {
+
+            fetch("todo.php", {
+
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify({
+                    action: "done",
+                    id: id
+                })
+
+            })
+                .then(() => loadTodo());
+        }
+        loadTodo();
+
+    </script>
+
+</body>
+
+</html>
